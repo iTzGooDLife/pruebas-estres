@@ -3,16 +3,15 @@ import threading
 
 bp = Blueprint("cpu", __name__)
 
-cpu_threads = []
 
 def consume_cpu():
-    while True:
-        [x**2 for x in range(10000)]
+    # range = 1000000 # Se congestiona, pero no tanto, con un considerable volumen de request si
+    rango = 1000000
+    return [x**5 for x in range(rango)]
 
 @bp.route('/cpu')
 def cpu():
     t = threading.Thread(target=consume_cpu)
     t.daemon = True
     t.start()
-    cpu_threads.append(t)
-    return f"CPU load increased. Total threads: {len(cpu_threads)}"
+    return "CPU load increased."
